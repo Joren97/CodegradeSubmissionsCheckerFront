@@ -29,35 +29,14 @@ export function initializeAxios(
     config.httpsAgent = agent;
   });
 
-  $axios.onResponse(() => { });
+  $axios.onResponse(() => {    
+    console.log("Axios response");
+   });
 
   $axios.onError((error) => {
+    console.log("Axios error");
     console.log(error.response);
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.error
-    ) {
-      let {
-        response: {
-          data: {
-            error: {
-              details,
-            },
-          },
-        },
-      } = error;
-
-      if (details == null) {
-        console.log('detaliss null');
-        details = error.response.data.error.message;
-      }
-      console.log(details);
-
-      globalModule.setError(details);
-    } else {
-      globalModule.setError();
-    }
+      globalModule.setError();    
   });
 }
 
