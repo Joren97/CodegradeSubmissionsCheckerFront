@@ -40,28 +40,29 @@ export default class GlobalModule extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async getSubmissions(obj: {x: string, y: number}): Promise<string | undefined> {
+  async getSubmissions(obj: {x: string, y: number}): Promise<void> {
     const {x, y} = obj;
     
     try {          
       this.setLoading(true);
       let {data} = await $axios.get(`/submissions?studentNumber=${x}&courseId=${y}`);
+      console.log("Data:", data);
       this.setSubmissions(data);
       this.setLoading(false);
-      return "";
     } catch (error) {
       this.setError();
     }
   }
 
   @Action({ rawError: true })
-  async getCourses(): Promise<string | undefined> {
+  async getCourses(): Promise<void> {
     try {          
       this.setLoading(true);
       let {data} = await $axios.get(`/course`);
+      console.log("Data:", data);
+      
       this.setCourses(data);
       this.setLoading(false);
-      return "";
     } catch (error) {
       this.setError();
     }
