@@ -24,18 +24,14 @@ export function initializeAxios(
       config.headers.common.Authorization = `Bearer ${sessionToken}`;
     }
 
-    console.log('Base url: ', config.baseURL);
     console.log('Making ' + config.method + ' request to: ' + config.url);
     config.httpsAgent = agent;
   });
 
   $axios.onResponse(() => {    
-    console.log("Axios response");
    });
 
   $axios.onError((error) => {
-    console.log("Axios error");
-    console.log(error.response);
       globalModule.setError();    
   });
 }

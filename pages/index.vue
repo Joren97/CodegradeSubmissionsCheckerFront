@@ -8,6 +8,7 @@
               placeholder="Select a course"
               expanded
               v-model="selectedCourse"
+              :loading="isLoading"
             >
               <option
                 v-for="option in courses"
@@ -25,7 +26,7 @@
           <b-button @click="login">Inloggen</b-button>
         </div>
         <div class="column">
-          <b-table :data="submissionArray" sortable striped>
+          <b-table :data="submissionArray" sortable striped :loading="isLoading">
             <b-table-column field="name" label="Name" sortable v-slot="props">
               {{ props.row.name }}
             </b-table-column>
@@ -79,12 +80,16 @@ export default class Index extends Vue {
     });
   }
 
-  async fetch() {
-    globalModule.getCourses();
+  async asyncData() {
+    await globalModule.getCourses();
   }
 
   get submissionArray() {
     return globalModule.submissions;
+  }
+
+  get isLoading(){
+    return globalModule.loading;
   }
 
   get courses() {
