@@ -43,7 +43,7 @@
               label="Grade"
               v-slot="props"
             >
-              {{props.row.grade}}
+              {{props.row.grade ? props.row.grade : ''}}
             </b-table-column>
           </b-table>
         </div>
