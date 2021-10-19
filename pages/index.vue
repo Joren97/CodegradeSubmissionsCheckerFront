@@ -38,6 +38,13 @@
             >
               <b-icon icon="check" v-if="props.row.submitted" />
             </b-table-column>
+            <b-table-column
+              field="grade"
+              label="Grade"
+              v-slot="props"
+            >
+              {{props.row.grade}}
+            </b-table-column>
           </b-table>
         </div>
       </div>
