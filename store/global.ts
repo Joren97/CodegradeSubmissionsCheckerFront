@@ -1,5 +1,5 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
-import { SubmissionDto } from '~/dto/submission';
+import { SubmissionDto, PercentageDto } from '~/dto/submission';
 import { $axios } from '~/utils/api';
 
 export const namespaced = true;
@@ -9,7 +9,7 @@ export default class GlobalModule extends VuexModule {
   error: string | null = ''
   success: string | null = ''
   loading: boolean = false
-  submissions: Array<SubmissionDto> = []
+  submissions: {submissions: Array<SubmissionDto>, percentages: Array<PercentageDto>} = {submissions: [], percentages: []}
   courses: Array<any> = []
 
   @Mutation
@@ -30,7 +30,7 @@ export default class GlobalModule extends VuexModule {
   }
 
   @Mutation
-  setSubmissions(value: Array<SubmissionDto>): void {
+  setSubmissions(value: {submissions: Array<SubmissionDto>, percentages: Array<PercentageDto>}): void {
     this.submissions = value;
   }
 
@@ -46,7 +46,6 @@ export default class GlobalModule extends VuexModule {
     try {          
       this.setLoading(true);
       let {data} = await $axios.get(`/submissions?studentNumber=${x}&courseId=${y}`);
-      console.log("Data:", data);
       this.setSubmissions(data);
       this.setLoading(false);
     } catch (error) {
@@ -57,9 +56,8 @@ export default class GlobalModule extends VuexModule {
   @Action({ rawError: true })
   async getCourses(): Promise<void> {
     try {          
-      this.setLoading(true);
+      this.setLoading(true);      
       let {data} = await $axios.get(`/course`);
-      console.log("Data:", data);
       
       this.setCourses(data);
       this.setLoading(false);

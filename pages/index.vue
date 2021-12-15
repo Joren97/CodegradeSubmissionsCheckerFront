@@ -2,7 +2,7 @@
   <div class="section">
     <div class="container">
       <div class="columns">
-        <div class="column is-4">
+        <div class="column is-12">
           <b-field label="Course">
             <b-select
               placeholder="Select a course"
@@ -24,8 +24,10 @@
           </b-field>
 
           <b-button @click="login">Inloggen</b-button>
-        </div>
-        <div class="column">
+        </div>       
+      </div>
+      <div class="columns">
+         <div class="column">
           <b-table :data="submissionArray" sortable striped :loading="isLoading">
             <b-table-column field="name" label="Name" sortable v-slot="props">
               {{ props.row.name }}
@@ -45,6 +47,20 @@
             >
               {{props.row.grade ? props.row.grade : ''}}
             </b-table-column>
+          </b-table>
+        </div>
+        <div class="column">
+          <b-table :data="percentageArray" sortable striped :loading="isLoading">
+            <b-table-column field="chapter" label="Chapter" sortable v-slot="props">
+              {{props.row.chapter}}
+            </b-table-column>
+            <b-table-column label="Score" sortable v-slot="props">
+              {{props.row.score}}/{{props.row.max}}
+            </b-table-column>
+            <template #footer >
+              <th>Total:</th>
+              <th colspan="2">{{totalPercentage}}</th>
+            </template>
           </b-table>
         </div>
       </div>
@@ -92,7 +108,17 @@ export default class Index extends Vue {
   }
 
   get submissionArray() {
-    return globalModule.submissions;
+    return globalModule.submissions.submissions;
+  }
+
+  get percentageArray(){
+    return globalModule.submissions.percentages;
+  }
+
+  get totalPercentage(){
+    const maxTotal = globalModule.submissions.percentages.map(x => {return x.max}).reduce((a, b) => a + b, 0);
+    const scoreTotal = globalModule.submissions.percentages.map(x => {return x.score}).reduce((a, b) => a + b, 0);
+    return Math.round((scoreTotal / maxTotal) * 100) +"%";
   }
 
   get isLoading(){

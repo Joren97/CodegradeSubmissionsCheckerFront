@@ -24,7 +24,6 @@ export function initializeAxios(
       config.headers.common.Authorization = `Bearer ${sessionToken}`;
     }
 
-    console.log('Making ' + config.method + ' request to: ' + config.url);
     config.httpsAgent = agent;
   });
 
